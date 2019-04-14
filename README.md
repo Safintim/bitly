@@ -5,16 +5,16 @@
 
 Использует сервис https://bitly.com
 ## Требования
-
+***
 Для запуска программы требуется:
+1.Python 3.6
 
-1. Python 3.6
-2. Terminal
+2.Terminal
 
 
 ## Как установить:
-
-1. Установить Python3:
+***
+1.Установить Python3:
 
 (Windows):[python.org/downloads](https://www.python.org/downloads/windows/)
 
@@ -23,7 +23,7 @@
 sudo apt-get install python3
 sudo apt-get install python3-pip
 ```
-2. Установить зависимости и скачать сам проект:
+2.Установить зависимости и скачать сам проект:
 
 ```sh
 git clone https://github.com/Safintim/bitly.git`
