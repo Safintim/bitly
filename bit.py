@@ -2,7 +2,7 @@ import requests
 import os
 import argparse
 from dotenv import load_dotenv
-load_dotenv()
+from urllib.parse import urlparse
 
 
 def create_parser():
@@ -27,8 +27,8 @@ def create_bitlink(link):
 
 
 def get_summary_clicks(bitlink):
-
-    sum_bitlink_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'.format(bitlink[7:])
+    bitlink = urlparse(bitlink)
+    sum_bitlink_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'.format(bitlink.netloc + bitlink.path)
     payload = {
         'unit': 'month',
         'units': -1,
@@ -40,15 +40,15 @@ def get_summary_clicks(bitlink):
 
 
 def is_bitlink(link):
-    url = 'https://api-ssl.bitly.com/v4/bitlinks/{}'.format(link[7:])
+    link = urlparse(link)
+    url = 'https://api-ssl.bitly.com/v4/bitlinks/{}'.format(link.netloc + link.path)
     response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return True
-    return False
+    return response.ok
 
 
 if __name__ == '__main__':
 
+    load_dotenv()
     token = os.getenv('TOKEN')
     client_url = 'https://api-ssl.bitly.com/v4/user'
     headers = {
