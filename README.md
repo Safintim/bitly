@@ -26,7 +26,7 @@ sudo apt-get install python3-pip
 2. Установить зависимости и скачать сам проект:
 
 ```sh
-git clone https://github.com/Safintim/bitly.git`
+git clone https://github.com/Safintim/bitly.git
 pip3 install -r requirements.txt
 ```
 
