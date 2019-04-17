@@ -62,7 +62,6 @@ def main():
         try:
             print(get_summary_clicks(headers, user_link))
         except requests.exceptions.HTTPError as error:
-
             exit("Can't get data from server:\n{0}\n{1}".format(error, recommendation))
     else:
         try:
