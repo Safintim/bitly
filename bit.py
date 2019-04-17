@@ -11,7 +11,7 @@ def create_parser():
     return parser
 
 
-def create_bitlink(link):
+def create_bitlink(headers, link):
 
     bitlink_url = 'https://api-ssl.bitly.com/v4/bitlinks'
     payload = {
@@ -26,7 +26,7 @@ def create_bitlink(link):
     return response.json()['link']
 
 
-def get_summary_clicks(bitlink):
+def get_summary_clicks(headers, bitlink):
     bitlink = urlparse(bitlink)
     sum_bitlink_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'.format(bitlink.netloc + bitlink.path)
     payload = {
@@ -39,35 +39,37 @@ def get_summary_clicks(bitlink):
     return response.json()['total_clicks']
 
 
-def is_bitlink(link):
+def is_bitlink(headers, link):
     link = urlparse(link)
     url = 'https://api-ssl.bitly.com/v4/bitlinks/{}'.format(link.netloc + link.path)
     response = requests.get(url, headers=headers)
     return response.ok
 
 
-if __name__ == '__main__':
+def main():
+    parser = create_parser()
+    namespace = parser.parse_args()
+    user_link = namespace.user_link[0]
 
     load_dotenv()
     token = os.getenv('TOKEN')
-    client_url = 'https://api-ssl.bitly.com/v4/user'
     headers = {
         'Authorization': 'Bearer {}'.format(token)
     }
     recommendation = 'Check the entered data'
 
-    parser = create_parser()
-    namespace = parser.parse_args()
-    user_link = namespace.user_link[0]
-
-    if is_bitlink(user_link):
+    if is_bitlink(headers, user_link):
         try:
-            print(get_summary_clicks(user_link))
+            print(get_summary_clicks(headers, user_link))
         except requests.exceptions.HTTPError as error:
 
             exit("Can't get data from server:\n{0}\n{1}".format(error, recommendation))
     else:
         try:
-            print(create_bitlink(user_link))
+            print(create_bitlink(headers, user_link))
         except requests.exceptions.HTTPError as error:
             exit("Can't get data from server:\n{0}\n{1}".format(error, recommendation))
+
+
+if __name__ == '__main__':
+    main()
